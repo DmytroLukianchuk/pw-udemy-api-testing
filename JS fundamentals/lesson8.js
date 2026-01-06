@@ -64,3 +64,10 @@ console.log("Square of 4:", result);
 import { printHelper } from './printedHelper.js';
 
 printHelper("This is a message from lesson8.js");
+
+// imprort everything from another module
+import * as helper from './printedHelper.js';
+
+helper.printHelper("This is another message from lesson8.js");("Using import * as syntax.");    
+
+printHelper("This is a message from lesson8.js");
