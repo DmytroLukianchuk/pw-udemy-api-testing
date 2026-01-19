@@ -156,7 +156,7 @@ test("should create, update and delete the article", async ({ request }) => {
   expect(createArticleResponse.status()).toEqual(201);
 });
 
-test("Delete the post", async ({ request }) => {
+test("should delete the post", async ({ request }) => {
   // Create a New Article
   const uniqueArticleTitle = "Article Title " + Date.now();
   const createArticleResponse = await request.post(
