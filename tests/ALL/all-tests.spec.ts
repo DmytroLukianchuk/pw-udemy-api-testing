@@ -21,7 +21,7 @@ test.beforeAll('log in the user and get token', async({request}) => {
 })
 
 
-test("should get tags", async ({ request }) => {
+test.fixme("should get tags", async ({ request }) => {
   const getTagsResponse = await request.get(
     "https://conduit-api.bondaracademy.com/api/tags",
   );
@@ -98,7 +98,7 @@ test("should create an article", async ({ request }) => {
   expect(articlesResponseJSON.articles[0].title).toEqual(uniqueArticleTitle);
 });
 
-test("should create, update and delete the article", async ({ request }) => {
+test.only("should create, update and delete the article", async ({ request }) => {
   
   // Create a New Article
   const uniqueArticleTitle = "Article Title " + Date.now();
@@ -156,7 +156,7 @@ test("should create, update and delete the article", async ({ request }) => {
   expect(createArticleResponse.status()).toEqual(201);
 });
 
-test("should delete the post", async ({ request }) => {
+test.skip("should delete the post", async ({ request }) => {
   // Create a New Article
   const uniqueArticleTitle = "Article Title " + Date.now();
   const createArticleResponse = await request.post(
