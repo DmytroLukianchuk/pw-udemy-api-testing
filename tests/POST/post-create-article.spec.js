@@ -35,7 +35,7 @@ test("Create a new post", async ({ request }) => {
   });
 
   const newArticleResponseJSON = await createArticleResponse.json();
-  console.log(newArticleResponseJSON);
+  // console.log(newArticleResponseJSON);
   expect(createArticleResponse.status()).toEqual(201);
 
   const getArticleResponse = await request.get("https://conduit-api.bondaracademy.com/api/articles?limit=10&offset=0", {
@@ -44,7 +44,7 @@ test("Create a new post", async ({ request }) => {
     }
   })
   const getArticleResponseJSON = await getArticleResponse.json();
-  console.log(getArticleResponseJSON);
+  // console.log(getArticleResponseJSON);
 
   expect(getArticleResponse.status()).toEqual(200);
   expect(getArticleResponseJSON.articles[0].title).toEqual(uniqueArticleTitle);

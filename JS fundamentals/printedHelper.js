@@ -1,7 +1,7 @@
 // exported function
 
 export function printHelper(message) {
-    console.log("Helper says: " + message);
+    // console.log("Helper says: " + message);
 }
 
 // Classes
@@ -26,11 +26,11 @@ class CustomerDetails {
      * @param {string} firstName 
      */
     printFirstName(firstName){
-        console.log("First Name: " + firstName);
+        // console.log("First Name: " + firstName);
     }
 
     printLastName(lastName){
-        console.log("Last Name: " + lastName);
+        // console.log("Last Name: " + lastName);
     }
 }
 
