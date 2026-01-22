@@ -38,10 +38,9 @@ export default defineConfig({
       name: 'api-testing',
     },
 
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
+    {
+      name: 'firefox',
+    },
 
     // {
     //   name: 'webkit',
