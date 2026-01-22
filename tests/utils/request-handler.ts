@@ -33,10 +33,13 @@ export class RequestHandler {
         return this;
     };
 
-    getUrl(){
-        const url = new URL(`${this.baseUrl ?? this.baseUrlDefault}${this.apiPath}`);
-        console.log(url.toString());
-    }
+        private getUrl(){
+            const url = new URL(`${this.baseUrl ?? this.baseUrlDefault}${this.apiPath}`);
+            for (const [key, value] of Object.entries(this.apiParams)){
+                url.searchParams.append(key, value);
+            }
+            return url.toString();
+        }
 
 
 }
