@@ -6,8 +6,8 @@ export type TestOptions = {
 }
 
 export const test = base.extend<TestOptions>({
-    api: async( {}, use ) => {
-        const requestHandler = new RequestHandler();
+    api: async( {request}, use ) => {
+        const requestHandler = new RequestHandler(request, 'https://conduit-api.bondaracademy.com/api'  );
         await use(requestHandler);
     }
 })
