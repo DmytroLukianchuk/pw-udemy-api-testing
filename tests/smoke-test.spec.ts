@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
 import { test } from "../tests/utils/fixtures";
+import { APILogger } from "./utils/logger";
 
 let authToken: string;
 
@@ -16,6 +17,14 @@ test.beforeAll("Get token", async ({ api }) => {
     })
     .postRequest(200);
   authToken = "Token " + tokenResponse.user.token;
+});
+
+test("Test the logger", () => {
+  const logger = new APILogger();
+  logger.logRequest("GET", "https://test.com", {Authorization: "token"}, {"userName": "vasiaPupkin"});
+  logger.logResponse(200, {message: "Success"});
+  const recentLogs = logger.getRecentLogs();
+  console.log(recentLogs);
 });
 
 test("Get Articles", async ({ api }) => {
