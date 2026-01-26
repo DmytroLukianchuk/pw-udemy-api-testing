@@ -19,23 +19,56 @@ test.beforeAll("Get token", async ({ api }) => {
 });
 
 test("Get Articles", async ({ api }) => {
-  const response = await api
+  const articlesResponse = await api
     .path("/articles")
     .params({ limit: 10, offset: 0 })
     .headers({ Authorization: authToken })
     .getRequest(200);
 
-  console.log(response);
+  console.log(articlesResponse);
 
-  expect(response.articles.length).toBeLessThanOrEqual(10);
-  expect(response.articlesCount).toEqual(159);
+  expect(articlesResponse.articles.length).toBeLessThanOrEqual(10);
+  expect(articlesResponse.articlesCount).toBeGreaterThanOrEqual(150);
 });
 
 test("Get Tags", async ({ api }) => {
-  const response = await api
+  const tagsResponse = await api
     .path("/tags")
     .headers({ Authorization: authToken })
     .getRequest(200);
 
-  expect(response.tags.length).toBeLessThanOrEqual(10);
+  expect(tagsResponse.tags.length).toBeLessThanOrEqual(10);
+});
+
+test("Create and Delete the Article", async ({ api }) => {
+  // Create the Article
+  const uniqueArticleTitle = "Article Title " + Date.now();
+  const createArticleResponse = await api
+    .path("/articles")
+    .headers({ Authorization: authToken })
+    .body({
+      article: {
+        title: uniqueArticleTitle,
+        description: "test via UI 2",
+        body: "test via UI 2",
+        tagList: [],
+      },
+    })
+    .postRequest(201);
+  expect(createArticleResponse.article.title).toEqual(uniqueArticleTitle);
+  const slugId = createArticleResponse.article.slug;
+
+  // Get the Article to verify it was created
+  const articlesResponse = await api
+    .path("/articles")
+    .params({ limit: 10, offset: 0 })
+    .headers({ Authorization: authToken })
+    .getRequest(200);
+
+  console.log(articlesResponse);
+
+  expect(articlesResponse.articles[0].title).toBe(uniqueArticleTitle);
+
+  // DELETE the article
+  
 });

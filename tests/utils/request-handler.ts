@@ -61,7 +61,7 @@ export class RequestHandler {
             data: this.apiBody
         });
         expect(response.status()).toEqual(statusCode);
-        const responseJSON = response.json();
+        const responseJSON = await response.json();
         console.log(responseJSON)
 
         return responseJSON;
@@ -73,7 +73,7 @@ export class RequestHandler {
             headers: this.apiHeaders
         });
         expect(response.status()).toEqual(statusCode);
-        const responseJSON = response.json();
+        const responseJSON = await response.json();
         console.log(responseJSON)
 
         return responseJSON;
@@ -85,7 +85,7 @@ export class RequestHandler {
             headers: this.apiHeaders
         });
         expect(response.status()).toEqual(statusCode);
-        const responseJSON = response.json();
+        const responseJSON = await response.json();
         console.log(responseJSON)
 
         return responseJSON;
