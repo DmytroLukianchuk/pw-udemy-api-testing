@@ -57,7 +57,8 @@ export class RequestHandler {
     async postRequest(statusCode: number) {
         const url = this.getUrl();
         const response = await this.request.post(url, {
-            headers: this.apiHeaders
+            headers: this.apiHeaders,
+            data: this.apiBody
         });
         expect(response.status()).toEqual(statusCode);
         const responseJSON = response.json();
