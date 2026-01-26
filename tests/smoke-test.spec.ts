@@ -22,9 +22,20 @@ test("Get Articles", async ({ api }) => {
   const response = await api
     .path("/articles")
     .params({ limit: 10, offset: 0 })
-    // .headers({ Authorization: authToken })
+    .headers({ Authorization: authToken })
     .getRequest(200);
 
+  console.log(response);
+
   expect(response.articles.length).toBeLessThanOrEqual(10);
-  expect(response.articlesCount).toEqual(10);
+  expect(response.articlesCount).toEqual(159);
+});
+
+test("Get Tags", async ({ api }) => {
+  const response = await api
+    .path("/tags")
+    .headers({ Authorization: authToken })
+    .getRequest(200);
+
+  expect(response.tags.length).toBeLessThanOrEqual(10);
 });
