@@ -2,15 +2,17 @@ import { APIRequestContext } from "@playwright/test";
 
 export class RequestHandler {
     
+    private request: APIRequestContext;
     private baseUrl: string;
     private baseUrlDefault: string;
     private apiPath: string = '';
     private apiParams: object = {};
-    private apiHeaders: object = {};
+    private apiHeaders: Record<string, string> = {};
     private apiBody: object = {};
 
 
     constructor(request: APIRequestContext, apiBaseUrl: string){
+        this.request = request;
         this.baseUrl = apiBaseUrl;
         this.baseUrlDefault = apiBaseUrl;
     }
@@ -30,7 +32,7 @@ export class RequestHandler {
         return this;
     };
 
-    headers(headers: object) {
+    headers(headers: Record<string, string>) {
         this.apiHeaders = headers;
         return this;
     };
@@ -40,13 +42,24 @@ export class RequestHandler {
         return this;
     };
 
-        private getUrl(){
-            const url = new URL(`${this.baseUrl ?? this.baseUrlDefault}${this.apiPath}`);
-            for (const [key, value] of Object.entries(this.apiParams)){
-                url.searchParams.append(key, value);
-            }
-            return url.toString();
+    async getRequest() {
+        const url = this.getUrl();
+        const response = await this.request.get(url, {
+            headers: this.apiHeaders
+        });
+        const responseJSON = response.json();
+        console.log(responseJSON)
+
+        return response;
+    }
+
+    private getUrl(){
+        const url = new URL(`${this.baseUrl ?? this.baseUrlDefault}${this.apiPath}`);
+        for (const [key, value] of Object.entries(this.apiParams)){
+            url.searchParams.append(key, value);
         }
+        return url.toString();
+    }
 
 
 }
