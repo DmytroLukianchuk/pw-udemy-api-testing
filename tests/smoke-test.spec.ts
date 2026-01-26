@@ -24,9 +24,6 @@ test("Get Articles", async ({ api }) => {
     .params({ limit: 10, offset: 0 })
     .headers({ Authorization: authToken })
     .getRequest(200);
-
-  console.log(articlesResponse);
-
   expect(articlesResponse.articles.length).toBeLessThanOrEqual(10);
   expect(articlesResponse.articlesCount).toBeGreaterThanOrEqual(150);
 });
@@ -40,7 +37,7 @@ test("Get Tags", async ({ api }) => {
   expect(tagsResponse.tags.length).toBeLessThanOrEqual(10);
 });
 
-test("Create and Delete the Article", async ({ api }) => {
+test("Create, Update and Delete the Article", async ({ api }) => {
   // Create the Article
   const uniqueArticleTitle = "Article Title " + Date.now();
   const createArticleResponse = await api
@@ -64,26 +61,45 @@ test("Create and Delete the Article", async ({ api }) => {
     .params({ limit: 10, offset: 0 })
     .headers({ Authorization: authToken })
     .getRequest(200);
-
-  console.log(articlesResponse);
-
   expect(articlesResponse.articles[0].title).toBe(uniqueArticleTitle);
 
-  // DELETE the article
-  const deleteRequest = await api
+  // Update the article
+  const updatedArticleTitle = uniqueArticleTitle + " - updated";
+  const updateArticleResponse = await api
     .path(`/articles/${slugId}`)
     .headers({ Authorization: authToken })
-    .deleteRequest(204)
-    
-    // Verify the article not in the list thus, was deleted
-    // Get the Article to verify it was created
-    const articlesResponseTwo = await api
+    .body({
+      article: {
+        title: updatedArticleTitle,
+        description: "test via UI 2 - updated",
+        body: "test via UI 2 - updated",
+        tagList: [],
+      },
+    })
+    .putRequest(200);
+  expect(updateArticleResponse.article.title).toEqual(updatedArticleTitle);
+
+  // Verify the article not in the list thus, was updated
+  const newSlugId = updateArticleResponse.article.slug;
+  const articlesResponseTwo = await api
     .path("/articles")
     .params({ limit: 10, offset: 0 })
     .headers({ Authorization: authToken })
     .getRequest(200);
-    
-    console.log(articlesResponseTwo);
-    
-    expect(articlesResponseTwo.articles[0].title).not.toBe(uniqueArticleTitle);
-  });
+  expect(articlesResponseTwo.articles[0].title).not.toBe(uniqueArticleTitle);
+
+  // DELETE the article
+  const deleteRequest = await api
+    .path(`/articles/${newSlugId}`)
+    .headers({ Authorization: authToken })
+    .deleteRequest(204);
+
+  // Verify the article not in the list thus, was deleted
+  // Get the Article to verify it was created
+  const articlesResponseThree = await api
+    .path("/articles")
+    .params({ limit: 10, offset: 0 })
+    .headers({ Authorization: authToken })
+    .getRequest(200);
+  expect(articlesResponseThree.articles[0].title).not.toBe(updatedArticleTitle);
+});
