@@ -1,14 +1,27 @@
 import { expect } from "@playwright/test";
 import { test } from "../tests/utils/fixtures";
 
-test("The Get Articles", async ({ api }) => {
+// let authToken: string
+
+// test.beforeAll('Get token', async({ api }) => {
+//   // Log in the user AND get the token
+
+//   const tokenResponse = await api
+//         .path('/user/login')
+//         .body({"user": { "email": "dmytro.lukianchuk.lead@gmail.com", "password": "Dluk@CBA11" } })
+//         .postRequest(200);
+//     authToken = 'Token ' + tokenResponse.user.token;
+// });
+
+test("Get Articles", async ({ api }) => {
   const response = await api
     .path("/articles")
-    .params({ offset: 0, limit: 10 })
-    .getRequest(200);
+    .params({ limit: 10, offset: 0  })
+    // .headers({ Authorization: authToken })
+    .getRequest(200)
 
     expect(response.articles.length).toBeGreaterThan(0);
-    // expect(response.articles.lenght)
+    expect(response.articlesCount).toEqual(10);
   
   
   })

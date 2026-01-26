@@ -2,9 +2,10 @@ import { test, expect } from "@playwright/test";
 
 let authToken: string;
 
-test.beforeAll('log in the user and get token', async({request}) => {
+test.beforeAll("log in the user and get token", async ({ request }) => {
   // Log in the user AND get the token
-  const loginResponse = await request.post("https://conduit-api.bondaracademy.com/api/users/login",
+  const loginResponse = await request.post(
+    "https://conduit-api.bondaracademy.com/api/users/login",
     {
       data: {
         user: {
@@ -15,11 +16,10 @@ test.beforeAll('log in the user and get token', async({request}) => {
     },
   );
 
-  // Get the token 
+  // Get the token
   const data = await loginResponse.json();
   authToken = "Token " + data.user.token;
-})
-
+});
 
 test.fixme("should get tags", async ({ request }) => {
   const getTagsResponse = await request.get(
@@ -98,8 +98,9 @@ test("should create an article", async ({ request }) => {
   expect(articlesResponseJSON.articles[0].title).toEqual(uniqueArticleTitle);
 });
 
-test.only("should create, update and delete the article", async ({ request }) => {
-  
+test.only("should create, update and delete the article", async ({
+  request,
+}) => {
   // Create a New Article
   const uniqueArticleTitle = "Article Title " + Date.now();
   const createArticleResponse = await request.post(
