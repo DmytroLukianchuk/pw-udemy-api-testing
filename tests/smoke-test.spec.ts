@@ -56,7 +56,7 @@ test("Create and Delete the Article", async ({ api }) => {
     })
     .postRequest(201);
   expect(createArticleResponse.article.title).toEqual(uniqueArticleTitle);
-  const slugId = createArticleResponse.article.slug;
+  const slugId = await createArticleResponse.article.slug;
 
   // Get the Article to verify it was created
   const articlesResponse = await api
@@ -70,5 +70,8 @@ test("Create and Delete the Article", async ({ api }) => {
   expect(articlesResponse.articles[0].title).toBe(uniqueArticleTitle);
 
   // DELETE the article
-  
+  const deleteRequest = await api
+    .path(`/articles/${slugId}`)
+    .headers({ Authorization: authToken })
+    .deleteRequest(204)
 });
