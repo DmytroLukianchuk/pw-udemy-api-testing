@@ -74,4 +74,16 @@ test("Create and Delete the Article", async ({ api }) => {
     .path(`/articles/${slugId}`)
     .headers({ Authorization: authToken })
     .deleteRequest(204)
-});
+    
+    // Verify the article not in the list thus, was deleted
+    // Get the Article to verify it was created
+    const articlesResponseTwo = await api
+    .path("/articles")
+    .params({ limit: 10, offset: 0 })
+    .headers({ Authorization: authToken })
+    .getRequest(200);
+    
+    console.log(articlesResponseTwo);
+    
+    expect(articlesResponseTwo.articles[0].title).not.toBe(uniqueArticleTitle);
+  });
